@@ -10,12 +10,18 @@ const Home = () => {
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/posts")
       .then((res) => {
+        if (!res.ok) {
+          throw Error("couldn't fetch the data for that resource");
+        }
         return res.json();
       })
 
       .then((data) => {
         setPosts(data);
         setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err.message);
       });
   }, []);
 
