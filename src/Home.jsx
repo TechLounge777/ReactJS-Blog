@@ -6,6 +6,7 @@ import BlogList from "./BlogList";
 const Home = () => {
   const [posts, setPosts] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/posts")
@@ -19,14 +20,17 @@ const Home = () => {
       .then((data) => {
         setPosts(data);
         setIsLoading(false);
+        setError(null);
       })
       .catch((err) => {
-        console.log(err.message);
+        setIsLoading(false);
+        setError(err.message);
       });
   }, []);
 
   return (
     <div className="home">
+      {error && <div>{error}</div>}
       {isLoading && <div>Loading ...</div>}
       {posts && <BlogList posts={posts} user="Tom Smith" title="All Posts" />}
     </div>
