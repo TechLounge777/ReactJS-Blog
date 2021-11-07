@@ -4,8 +4,10 @@ const UseFetch = (url) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/posts")
+    const abortCont = new AbortController();
+    fetch(url, { signal: abortCont.signal })
       .then((res) => {
         if (!res.ok) {
           throw Error("couldn't fetch the data for that resource");
@@ -19,10 +21,17 @@ const UseFetch = (url) => {
         setError(null);
       })
       .catch((err) => {
-        setIsLoading(false);
-        setError(err.message);
+        if (err.name === "Abort Error") {
+          console.log("fetch aborted");
+        } else {
+          setIsLoading(false);
+          setError(err.message);
+        }
       });
+
+    return () => console.log("cleanup");
   }, [url]);
+
   return { data, isLoading, error };
 };
 
