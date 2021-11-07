@@ -4,7 +4,7 @@ import BlogList from "./BlogList";
 
 const Home = () => {
   const {
-    data: blogs,
+    data: posts,
     isLoading,
     error,
   } = useFetch("https://jsonplaceholder.typicode.com/posts");
@@ -12,7 +12,7 @@ const Home = () => {
     <div className="home">
       {error && <div>{error}</div>}
       {isLoading && <div>Loading ...</div>}
-      {blogs && <BlogList blogs={blogs} user="Tom Smith" title="All Posts" />}
+      {posts && <BlogList posts={posts} user="Tom Smith" title="All Posts" />}
     </div>
   );
 };
